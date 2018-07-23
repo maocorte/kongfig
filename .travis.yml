@@ -19,3 +19,4 @@ before_install:
     -  docker run --rm --link kong-database:kong-database -e "KONG_DATABASE=postgres" -e "KONG_PG_HOST=kong-database" kong:$KONG_VERSION kong migrations up
     -  docker run -d --name kong --link kong-database:kong-database -e "KONG_DATABASE=postgres" -e "KONG_PG_HOST=kong-database" -p 8001:8001 -p 8000:8000 kong:$KONG_VERSION
     -  sleep 5
+    -  docker ps -a
