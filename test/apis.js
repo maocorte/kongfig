@@ -1,5 +1,5 @@
 import expect from 'expect.js';
-import {apis, plugins} from '../src/core.js';
+import {apis, apiPlugins} from '../src/core.js';
 import {
     noop,
     createApi,
@@ -95,7 +95,7 @@ describe("apis", () => {
             }]
         }]).map(x => x({
             hasApi: () => false,
-            hasPlugin: () => false,
+            hasApiPlugin: () => false,
             getApiId: () => 'abcd-1234',
             getVersion: () => '0.10.0'
         }));
@@ -108,13 +108,13 @@ describe("apis", () => {
 
     describe("plugins", () => {
         it("should add a plugin to an api", () => {
-            var actual = plugins(
+            var actual = apiPlugins(
                 'leads', [{
                     "name": "cors",
                     'attributes': {
                         "config.foo": 'bar'
                     }}]
-            ).map(x => x({hasPlugin: () => false, getApiId: () => 'abcd-1234'}));
+            ).map(x => x({hasApiPlugin: () => false, getApiId: () => 'abcd-1234'}));
 
             expect(actual).to.be.eql([
                 addApiPlugin('abcd-1234', 'cors', {"config.foo": 'bar'})
@@ -122,13 +122,13 @@ describe("apis", () => {
         });
 
         it("should remove api plugin", () => {
-            var actual = plugins(
+            var actual = apiPlugins(
                 'leads', [{
                     "name": "cors",
                     "ensure": "removed"}]
             ).map(x => x({
-                hasPlugin: () => true,
-                getPluginId: () => 123,
+                hasApiPlugin: () => true,
+                getApiPluginId: () => 123,
                 getApiId: () => 'abcd-1234',
             }));
 
@@ -138,15 +138,15 @@ describe("apis", () => {
         });
 
         it('should update api plugin', () => {
-            var actual = plugins(
+            var actual = apiPlugins(
                 'leads', [{
                     'name': 'cors',
                     'attributes': {
                         'config.foo': 'bar'
                     }}]
             ).map(x => x({
-                hasPlugin: () => true,
-                getPluginId: () => 123,
+                hasApiPlugin: () => true,
+                getApiPluginId: () => 123,
                 getApiId: () => 'abcd-1234',
                 isApiPluginUpToDate: () => false
             }));
@@ -157,7 +157,7 @@ describe("apis", () => {
         });
 
         it("should validate ensure enum", () => {
-            expect(() => plugins("leads", [{
+            expect(() => apiPlugins("leads", [{
                 "ensure": "not-valid",
                 "name": "leads"
             }])).to.throwException(/Invalid ensure/);

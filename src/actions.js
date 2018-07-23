@@ -11,6 +11,110 @@ export function noop({ type, ...rest} = {}) {
     };
 }
 
+export function createService(name, params) {
+    return {
+        type: 'create-service',
+        endpoint: {name: 'services'},
+        method: 'POST',
+        body: assign({}, params, {name})
+    };
+}
+
+export function removeService(name) {
+    return {
+        type: 'remove-service',
+        endpoint: {name: 'service', params: {name}},
+        method: 'DELETE',
+    };
+}
+
+export function updateService(name, params) {
+    return {
+        type: 'update-service',
+        endpoint: {name: 'service', params: {name}},
+        method: 'PATCH',
+        body: params
+    };
+}
+
+export function addServicePlugin(serviceId, pluginName, params) {
+    return {
+        type: 'add-service-plugin',
+        endpoint: {name: 'service-plugins', params: {serviceId, pluginName}},
+        method: 'POST',
+        body: assign({}, params, {name: pluginName})
+    };
+}
+
+export function removeServicePlugin(serviceId, pluginId) {
+    return {
+        type: 'remove-service-plugin',
+        endpoint: {name: 'service-plugin', params: {serviceId, pluginId}},
+        method: 'DELETE',
+    };
+}
+
+export function updateServicePlugin(serviceId, pluginId, params) {
+    return {
+        type: 'update-service-plugin',
+        endpoint: {name: 'service-plugin', params: {serviceId, pluginId}},
+        method: 'PATCH',
+        body: params
+    };
+}
+
+export function createRoute(serviceName, params) {
+    return {
+        type: 'create-route',
+        endpoint: {name: 'routes'},
+        method: 'POST',
+        body: assign({}, params, {serviceName})
+    };
+}
+
+export function removeRoute(name) {
+    return {
+        type: 'remove-route',
+        endpoint: {name: 'route', params: {name}},
+        method: 'DELETE',
+    };
+}
+
+export function updateRoute(name, params) {
+    return {
+        type: 'update-route',
+        endpoint: {name: 'route', params: {name}},
+        method: 'PATCH',
+        body: params
+    };
+}
+
+export function addRoutePlugin(routeId, pluginName, params) {
+    return {
+        type: 'add-route-plugin',
+        endpoint: {name: 'route-plugins', params: {routeId, pluginName}},
+        method: 'POST',
+        body: assign({}, params, {name: pluginName})
+    };
+}
+
+export function removeRoutePlugin(routeId, pluginId) {
+    return {
+        type: 'remove-route-plugin',
+        endpoint: {name: 'route-plugin', params: {routeId, pluginId}},
+        method: 'DELETE',
+    };
+}
+
+export function updateRoutePlugin(routeId, pluginId, params) {
+    return {
+        type: 'update-route-plugin',
+        endpoint: {name: 'route-plugin', params: {routeId, pluginId}},
+        method: 'PATCH',
+        body: params
+    };
+}
+
 export function createApi(name, params) {
     return {
         type: 'create-api',
@@ -18,7 +122,7 @@ export function createApi(name, params) {
         method: 'POST',
         body: assign({}, params, {name})
     };
-};
+}
 
 export function removeApi(name) {
     return {

@@ -10,6 +10,7 @@ export default async (adminApi) => {
             return getCurrentStateSelector({
                 _info: { version },
                 apis: parseApis(state.apis, version),
+                services: parseServices(state.services),
                 consumers: parseConsumers(state.consumers),
                 plugins: parseGlobalPlugins(state.plugins),
                 upstreams: semVer.gte(version, '0.10.0') ? parseUpstreams(state.upstreams) : undefined,
@@ -157,6 +158,75 @@ function parseApiPlugins(plugins) {
     }
 
     return plugins.map(parsePlugin);
+}
+
+export const parseRoute = ({
+    id, created_at, protocols, methods,
+    hosts, paths, regex_priority, strip_path,
+    preserve_host, service
+}) => {
+    return {
+        attributes: {
+            protocols,
+            methods,
+            hosts,
+            paths,
+            regex_priority,
+            strip_path,
+            preserve_host,
+            service
+        },
+        _info: {
+            id,
+            created_at
+        }
+    }
+}
+
+function parseServiceRoutes(routes) {
+    if (!Array.isArray(routes)) {
+        return [];
+    }
+
+    return routes.map(parseRoute);
+}
+
+export const parseService = ({
+    id, created_at, connect_timeout, 
+    protocol, host, port, path, name, 
+    retries, read_timeout, write_timeout
+}) => {
+    return {
+        name,
+        attributes: {
+            connect_timeout,
+            protocol,
+            host,
+            port,
+            path,
+            retries,
+            read_timeout,
+            write_timeout
+        },
+        _info: {
+            id,
+            created_at
+        }
+    }
+}
+
+const withParseServiceExtras = service => {
+    const { name, ...rest} = parseService(service);
+
+    return { name, plugins: parseApiPlugins(service.plugins), routes: parseServiceRoutes(service.routes), ...rest };
+}
+
+function parseServices(services) {
+    if (!Array.isArray(services)) {
+        return [];
+    }
+
+    return services.map(withParseServiceExtras)
 }
 
 export const parseGlobalPlugin = ({

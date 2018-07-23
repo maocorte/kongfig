@@ -14,6 +14,17 @@ export default function createRouter(host, https) {
             case 'consumer-acls': return `${adminApiRoot}/consumers/${params.consumerId}/acls`;
             case 'consumer-acl': return `${adminApiRoot}/consumers/${params.consumerId}/acls/${params.aclId}`;
 
+            case 'services': return `${adminApiRoot}/services`;
+            case 'service': return `${adminApiRoot}/services/${params.name}`
+            case 'service-plugins': return `${adminApiRoot}/services/${params.apiId}/plugins`;
+            case 'service-plugin': return `${adminApiRoot}/services/${params.apiId}/plugins/${params.pluginId}`;
+            case 'service-routes': return `${adminApiRoot}/services/${params.serviceId}/routes`;
+
+            case 'routes': return `${adminApiRoot}/routes`;
+            case 'route': return `${adminApiRoot}/routes/${params.routeId}`;
+            case 'route-plugins': return `${adminApiRoot}/routes/${params.apiId}/plugins`;
+            case 'route-plugin': return `${adminApiRoot}/routes/${params.apiId}/plugins/${params.pluginId}`;
+
             case 'plugins': return `${adminApiRoot}/plugins`;
             case 'plugin': return `${adminApiRoot}/plugins/${params.pluginId}`;
             case 'plugins-enabled': return `${adminApiRoot}/plugins/enabled`;

@@ -29,6 +29,9 @@ function createApi({ router, getPaginatedJson, ignoreConsumers }) {
         fetchTargets: (upstreamId) => getPaginatedJson(router({name: 'upstream-targets', params: {upstreamId}})),
         fetchTargetsV11Active: (upstreamId) => getPaginatedJson(router({name: 'upstream-targets-active', params: {upstreamId}})),
         fetchCertificates: () => getPaginatedJson(router({name: 'certificates'})),
+        fetchServices: () => getPaginatedJson(router({name: 'services'})),
+        fetchServicePlugins: serviceId => getPaginatedJson(router({name: 'service-plugins', params: {serviceId}})),
+        fetchRoutes: serviceId => getPaginatedJson(router({name: 'service-routes', params: {serviceId}})),
 
         // this is very chatty call and doesn't change so its cached
         fetchPluginSchemas: () => {
